@@ -2,6 +2,7 @@
 global using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Minesharp.Graphics;
+using Minesharp.Graphics.Textures;
 using Minesharp.World;
 
 namespace Minesharp;
@@ -11,9 +12,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Color _backgroundColor = new(0, 102, 200); 
-
-    public static Texture2D _DIRT_TEX;
+    private Color _backgroundColor = new(120, 167, 255);
 
     private Camera _camera;
 
@@ -24,17 +23,18 @@ public class Game1 : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
-        Window.AllowAltF4 = false;
+        Window.AllowAltF4 = false; 
     }
 
     protected override void Initialize()
     {
+        Global.Content = Content;
+
         GraphicsManager.SetScreenBounds(_graphics);
 
-        _camera = new Camera(Vector3.Zero, 30f, 75f, 40f, GraphicsDevice);
+        _camera = new Camera(new Vector3(7, 17, 25), 20f, 75f, 40f, GraphicsDevice);
         _chunk0 = new(GraphicsDevice);
         
-
         base.Initialize();
 
         _chunk0.GenerateChunk();
@@ -46,7 +46,7 @@ public class Game1 : Game
 
         Global.DebugFont = Content.Load<SpriteFont>("DebuggingTools/minecraftRegular");
 
-        _DIRT_TEX = Content.Load<Texture2D>("Textures/dirtTex");
+        TexturesManager.LoadAllTextures();
     }
 
     protected override void Update(GameTime gameTime)
@@ -66,7 +66,6 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(_backgroundColor);
 
-
         GraphicsManager.YieldViewAndProjectionMatrices(_camera);
 
         // Save the current graphics device state
@@ -81,9 +80,6 @@ public class Game1 : Game
 
         string debugText = $"Camera Position: ({(int)_camera.Position.X}, {(int)_camera.Position.Y}, {(int)_camera.Position.Z})";
         _spriteBatch.DrawString(Global.DebugFont, debugText, Vector2.Zero, Color.Black);
-
-        string fpsText = $"FPS: {1 / Global.DeltaTime}";
-        _spriteBatch.DrawString(Global.DebugFont, fpsText, new Vector2(0, 20), Color.Black);
 
         _spriteBatch.End();
 

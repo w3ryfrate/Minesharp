@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace Minesharp;
@@ -21,7 +19,6 @@ public class Camera
 
     private bool _firstFrame = true;
 
-    private Vector2 _lastMousePosition;
     private GraphicsDevice graphicsDevice;
 
     public Camera(Vector3 position, float speed, float fov, float sensitivity, GraphicsDevice graphicsDevice)
@@ -85,7 +82,6 @@ public class Camera
         if (_firstFrame)
         {
             Mouse.SetPosition(screenCenterX, screenCenterY);
-            _lastMousePosition = new Vector2(screenCenterX, screenCenterY);
             _firstFrame = false;
         }
         else
